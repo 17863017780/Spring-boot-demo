@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <script src="http://misc.360buyimg.com/??jdf/lib/jquery-1.6.4.js"type="text/javascript"></script>
+    <title>二维码的生成</title>
+    <style>
+        img{display: none;}
+    </style>
+    <script>
+        function QRcode() {
+            var param={};
+            param.type=$("#str").val();
+            var str = $("#str").val();;
+            var imgShow=document.getElementById('imgshow');
+            if (str == null || str ==""){
+                alert("请输入网址啊，老铁~");
+                str="";
+            }else{
+                alert("str：" +str);
+            }
+            $.ajax({
+                type: "GET",
+                scriptCharset: 'utf-8',
+                url: "/QRcode",
+                data: param,
+                dataType: "String",
+                success: function (data) {
+                    imgShow.display="block";
+                    imgShow.src="@{'/images/' + ${pic_name}}";
+                    }
+            });
+        }
+    </script>
+</head>
+<div>
+    <h4> 二维码生成器</h4>
+    </br>
+    <b>网址：</b>
+    <input type="text" placeholder="请输入想要输入的内容" id="str"/>
+    <button type="button" id="qq" onclick="QRcode()">提交</button>
+    <img id ="imgshow" src="@{'/images/' + ${pic_name}}" width="300px" hight="300px">
+</div>
+
+</body>
+</html>

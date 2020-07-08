@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <script src="http://misc.360buyimg.com/??jdf/lib/jquery-1.6.4.js"type="text/javascript"></script>
+    <script src="/js/tan.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        $().ready(function () {
+            $('#qq').click(function () {
+                var param={};
+                param.type=$("#type").val();
+                var provinceId = $("#provinceId").val();
+                if(provinceId != null && provinceId !=""){
+                    param.provinceId=provinceId;
+                }
+
+                $.ajax({
+                    type: "GET",
+                    scriptCharset: 'utf-8',
+                    url: "/SearchJsf.do",
+                    data:param,
+                    dataType: "json",
+                    beforeSend: function() {
+                        $('#warning').show();
+                    },
+                    success: function (data) {
+                        $('#warning').hide();
+                        console.log(data);
+                        var d=data.searchJsf;
+                        console.log(d);
+                        var html = "";
+                        var ip = "";
+                        var isSuccess = "";
+                        var error = "";
+                        for(var i=0;i< d.length;i++){
+                            console.log("ip=" + d[i].ip);
+                            ip = d[i].ip;
+                            console.log("isSuccess=" + d[i].isSuccess);
+                            isSuccess = d[i].isSuccess+"";
+                            if (isSuccess == "false") {
+                                console.log("error=" + d[i].error);
+                                error = d[i].error;
+                                html += "<tr><td style=\"width:200px\">" + ip + "</td><td style=\"width=200px\">" + isSuccess + "</td><td><span style='color:red'>" + error + "</span></td></tr>";
+                            }else{
+                                console.log("Success=" + d[i].Success);
+                                success = d[i].Success;
+                                html += "<tr><td style=\"width:200px\">" + ip + "</td><td style=\"width=200px\">" + isSuccess + "</td><td>" + success + "</td></tr>";
+                            }
+                            $("#content").html(html);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="/css/tan.css" type="text/css">
+    <title>searchJsf</title>
+
+</head>
+<body>
+<div style="margin-top: 30px;">
+<h4>接口：com.jd.auction.search.soa.client.service.PaimaiSearchService</h4>
+<h4>所属系统：搜索页</h4>
+<div style="display: inline-block">
+    <form id="searchJsf">
+        &nbsp;&nbsp;<span>type：</span><select id="type">
+        <option value="0">搜索法院下全部拍品数量</option>
+        <option value="1">搜索省编号下拍品数量</option>
+    </select>
+        &nbsp&nbsp 省市编号:<input type="text" name="provinceId" id="provinceId"/>
+        <button type="button" id="qq">提交</button>
+    </form></div>
+</div><br/>
+<table>
+    <thead align="left">
+    <tr>
+        <th style="width:200px">ip</th>
+        <th style="width:200px">是否存活</th>
+        <th style="width:200px">返回信息</th>
+    </tr>
+
+    </thead>
+
+    <tbody id="content">
+    </tbody>
+</table>
+<div class="overlay" id="warning"><img src="images/loading.gif"></div>
+</body>
+</html>
