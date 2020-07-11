@@ -644,17 +644,33 @@ public class largestRectangleArea {
         return result;
     }
 
+    /**
+     * 二分查找算法
+     * @param a
+     * @param low
+     * @param high
+     * @param target
+     * @return
+     */
+    public static int BinarySearch(int[] a , int low , int high , int target){
+        if( low > high ) return -1;
+        int mid = low + ( high - low ) / 2 ;
+        if ( a[mid] < target ) return  BinarySearch( a ,mid+1 , high , target );
+        if ( a[mid] > target ) return  BinarySearch( a ,low , mid-1 , target );
+        return  mid;
+    }
+
 
 
 
     public static void main(String[] args){
-        String st= "2,5,3,4,5";
+        String st= "1,2,3,4,5";
         String[] str =st.split(",");
         int[] a =new int[str.length];
         for (  int i = 0 ; i < a.length ; i++ ) {
             a[i] = Integer.valueOf(str[i]);
 //            System.out.println(a[i]);
         }
-        System.out.println(increasingTriplet(a));
+        System.out.println(BinarySearch(a,0,a.length,3));
     }
 }
